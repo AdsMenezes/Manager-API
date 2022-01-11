@@ -1,13 +1,13 @@
 import { injectable, inject } from 'tsyringe'
-import { hash } from 'bcrypt'
 
 import AppError from '@shared/errors/AppError'
 
-import { UserType } from '../../infrastructure/typeorm/entities/User'
+import IHashProvider from '@shared/container/providers/HashProvider/models/IHashProvider'
 import IUsersRepository from '../repositories/IUsersRepository'
 import IUserResponseDTO from '../dtos/IUserResponseDTO'
 import UserMap from '../mappers/UserMap'
 
+import { UserType } from '../../infrastructure/typeorm/entities/User'
 interface IRequest {
   name: string
   email: string
@@ -20,7 +20,10 @@ interface IRequest {
 export default class CreateUserService {
   constructor(
     @inject('UsersRepository')
-    private readonly usersRepository: IUsersRepository
+    private readonly usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private readonly hashProvider: IHashProvider
   ) {}
 
   public async execute({
@@ -36,7 +39,7 @@ export default class CreateUserService {
       throw new AppError('User already exists.')
     }
 
-    const hashedPassword = await hash(password, 8)
+    const hashedPassword = await this.hashProvider.generateHash(password)
 
     const user = await this.usersRepository.create({
       name,
