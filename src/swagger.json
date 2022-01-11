@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Manager",
+    "description": "Nesse documento você encontra todos as rotas fornecidas pela API-REST, assim como sua utilização, parâmetros e seus respectivos retornos, você também encontra como a API lida com os seus erros externos e internos.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "anderson@codrop.com.br"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Criar usuário.",
+        "description": "Método responsável por realizar a criação de um usuário.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 40
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 3,
+                    "maxLength": 20
+                  },
+                  "phone": {
+                    "type": "string",
+                    "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["administrator", "operator"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Já existe um usuário utilizando este endereço de email.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "User already exists."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 20
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 40
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["administrator", "operator"]
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JTW"
+      }
+    }
+  }
+}
