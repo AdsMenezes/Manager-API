@@ -6,6 +6,7 @@ import express from 'express'
 import routes from './routes'
 
 import '@shared/infrastructure/typeorm'
+import '@shared/container'
 
 const app = express()
 
