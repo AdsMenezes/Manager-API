@@ -1,28 +1,35 @@
 import AppError from '@shared/errors/AppError'
 
-import { UserType } from '../../infrastructure/typeorm/entities/User'
+import FakeHashProvider from '@shared/container/providers/HashProvider/fakes/FakeHashProvider'
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'
 import CreateUserService from './CreateUserService'
 
+import { UserType } from '../../infrastructure/typeorm/entities/User'
+
+let fakeHashProvider: FakeHashProvider
 let fakeUsersRepository: FakeUsersRepository
 let createUser: CreateUserService
 
 describe('Create User', () => {
   beforeEach(() => {
+    fakeHashProvider = new FakeHashProvider()
     fakeUsersRepository = new FakeUsersRepository()
 
-    createUser = new CreateUserService(fakeUsersRepository)
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider)
   })
 
   it('should be able to create a user', async () => {
+    const generateHash = jest.spyOn(fakeHashProvider, 'generateHash')
+
     const user = await createUser.execute({
       name: 'John Doe',
       email: 'john@exemple.com',
       password: 'password',
-      phone: '(11) 99999-9999',
+      phone: 'phone',
       type: UserType.OPERATOR,
     })
 
+    expect(generateHash).toHaveBeenCalledWith('password')
     expect(user).toHaveProperty('id')
   })
 
@@ -31,7 +38,7 @@ describe('Create User', () => {
       name: 'John Doe',
       email: 'john@exemple.com',
       password: 'password',
-      phone: '(11) 99999-9999',
+      phone: 'phone',
       type: UserType.OPERATOR,
     })
 
@@ -40,7 +47,7 @@ describe('Create User', () => {
         name: 'John Doe',
         email: 'john@exemple.com',
         password: 'password',
-        phone: '(11) 99999-9999',
+        phone: 'phone',
         type: UserType.OPERATOR,
       })
     ).rejects.toBeInstanceOf(AppError)
