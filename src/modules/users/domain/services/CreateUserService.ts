@@ -3,8 +3,10 @@ import { hash } from 'bcrypt'
 
 import AppError from '@shared/errors/AppError'
 
-import User, { UserType } from '../../infrastructure/typeorm/entities/User'
+import { UserType } from '../../infrastructure/typeorm/entities/User'
 import IUsersRepository from '../repositories/IUsersRepository'
+import IUserResponseDTO from '../dtos/IUserResponseDTO'
+import UserMap from '../mappers/UserMap'
 
 interface IRequest {
   name: string
@@ -27,7 +29,7 @@ export default class CreateUserService {
     password,
     phone,
     type,
-  }: IRequest): Promise<User> {
+  }: IRequest): Promise<IUserResponseDTO> {
     const userAlreadyExists = await this.usersRepository.findByEmail(email)
 
     if (userAlreadyExists) {
@@ -44,6 +46,6 @@ export default class CreateUserService {
       type,
     })
 
-    return user
+    return UserMap.toDTO(user)
   }
 }

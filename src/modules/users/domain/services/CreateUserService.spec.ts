@@ -18,8 +18,8 @@ describe('Create User', () => {
     const user = await createUser.execute({
       name: 'John Doe',
       email: 'john@exemple.com',
-      password: '12345',
-      phone: '11 99999-9999',
+      password: 'password',
+      phone: '(11) 99999-9999',
       type: UserType.OPERATOR,
     })
 
@@ -30,7 +30,7 @@ describe('Create User', () => {
     await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'john@exemple.com',
-      password: '12345',
+      password: 'password',
       phone: '(11) 99999-9999',
       type: UserType.OPERATOR,
     })
@@ -39,7 +39,7 @@ describe('Create User', () => {
       createUser.execute({
         name: 'John Doe',
         email: 'john@exemple.com',
-        password: '12345',
+        password: 'password',
         phone: '(11) 99999-9999',
         type: UserType.OPERATOR,
       })
