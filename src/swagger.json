@@ -81,6 +81,60 @@
           }
         }
       }
+    },
+    "/providers/categories": {
+      "post": {
+        "tags": ["Providers"],
+        "summary": "Criar categoria de fornecedor.",
+        "description": "Método responsável por realizar a criação de uma categoria para fornecedores.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/ProviderCategory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Já existe uma categoria utilizando este nome.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "Provider category already exists."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -119,6 +173,17 @@
         "type": {
           "type": "string",
           "enum": ["administrator", "operator"]
+        }
+      }
+    },
+    "ProviderCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
         }
       }
     }
