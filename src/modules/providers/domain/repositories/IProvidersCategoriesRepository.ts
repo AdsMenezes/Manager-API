@@ -1,4 +1,4 @@
-import ProviderCategory from '../../infrastructure/entities/ProviderCategory'
+import ProviderCategory from '../../infrastructure/typeorm/entities/ProviderCategory'
 
 export default interface IProvidersCategoriesRepository {
   findByName(name: string): Promise<ProviderCategory | undefined>

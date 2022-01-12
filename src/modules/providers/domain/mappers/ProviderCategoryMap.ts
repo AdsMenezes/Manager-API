@@ -1,4 +1,4 @@
-import ProviderCategory from '@modules/providers/infrastructure/entities/ProviderCategory'
+import ProviderCategory from '@modules/providers/infrastructure/typeorm/entities/ProviderCategory'
 import IProviderCategoryResponseDTO from '../dtos/IProviderCategoryResponseDTO'
 
 export default class ProviderCategoryMap {
