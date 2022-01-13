@@ -13,11 +13,10 @@ export default class ProvidersCategoriesRepository
   }
 
   public async findByName(name: string): Promise<ProviderCategory | undefined> {
-    const category = await this.repository.findOne({
-      where: {
-        name,
-      },
-    })
+    const category = await this.repository
+      .createQueryBuilder()
+      .where('LOWER(name) = LOWER(:name)', { name })
+      .getOne()
 
     return category
   }
