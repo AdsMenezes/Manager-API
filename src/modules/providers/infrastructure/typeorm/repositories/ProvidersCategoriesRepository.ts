@@ -12,6 +12,10 @@ export default class ProvidersCategoriesRepository
     this.repository = getRepository(ProviderCategory)
   }
 
+  public async findById(id: number): Promise<ProviderCategory | undefined> {
+    return await this.repository.findOne(id)
+  }
+
   public async findByName(name: string): Promise<ProviderCategory | undefined> {
     const category = await this.repository
       .createQueryBuilder()

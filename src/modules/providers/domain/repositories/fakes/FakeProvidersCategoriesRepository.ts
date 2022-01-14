@@ -6,6 +6,10 @@ export default class FakeProvidersCategoriesRepository
 {
   private categories: ProviderCategory[] = []
 
+  public async findById(id: number): Promise<ProviderCategory | undefined> {
+    return this.categories.find(category => category.id === id)
+  }
+
   public async findByName(name: string): Promise<ProviderCategory | undefined> {
     return this.categories.find(category => category.name === name)
   }
