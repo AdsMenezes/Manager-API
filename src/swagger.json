@@ -82,6 +82,81 @@
         }
       }
     },
+    "/providers": {
+      "post": {
+        "tags": ["Providers"],
+        "summary": "Criar fornecedor.",
+        "description": "Método responsável por realizar a criação de um fornecedor.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "company": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "required": true
+                  },
+                  "cnpj": {
+                    "type": "string",
+                    "pattern": "^[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\/[0-9]{4}-[0-9]{2}$",
+                    "required": true
+                  },
+                  "category_id": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "representative": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "required": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Provider"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "Provider already exists."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/providers/categories": {
       "post": {
         "tags": ["Providers"],
@@ -173,6 +248,32 @@
         "type": {
           "type": "string",
           "enum": ["administrator", "operator"]
+        }
+      }
+    },
+    "Provider": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "company": {
+          "type": "string"
+        },
+        "cnpj": {
+          "type": "string",
+          "pattern": "^[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\/[0-9]{4}-[0-9]{2}$"
+        },
+        "representative": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$"
+        },
+        "category": {
+          "type": "string"
         }
       }
     },
