@@ -28,26 +28,31 @@
                   "name": {
                     "type": "string",
                     "minLength": 3,
-                    "maxLength": 20
+                    "maxLength": 20,
+                    "required": true
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "maxLength": 40
+                    "maxLength": 40,
+                    "required": true
                   },
                   "password": {
                     "type": "string",
                     "format": "password",
                     "minLength": 3,
-                    "maxLength": 20
+                    "maxLength": 20,
+                    "required": true
                   },
                   "phone": {
                     "type": "string",
-                    "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$"
+                    "pattern": "^\\([0-9]{2}\\)\\s[0-9]{5}-[0-9]{4}$",
+                    "required": true
                   },
                   "type": {
                     "type": "string",
-                    "enum": ["administrator", "operator"]
+                    "enum": ["administrator", "operator"],
+                    "required": true
                   }
                 }
               }
@@ -56,7 +61,7 @@
         },
         "responses": {
           "201": {
-            "description": "Usuário criado.",
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -66,7 +71,7 @@
             }
           },
           "400": {
-            "description": "Já existe um usuário utilizando este endereço de email.",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -75,6 +80,63 @@
                 "example": {
                   "error": "Error",
                   "message": "User already exists."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "Criar sessão.",
+        "description": "Método responsável por realizar a autenticação de um usuário.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 40,
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "Email or password is incorrect."
                 }
               }
             }
@@ -176,7 +238,8 @@
                   "name": {
                     "type": "string",
                     "minLength": 3,
-                    "maxLength": 15
+                    "maxLength": 15,
+                    "required": true
                   }
                 }
               }
@@ -185,7 +248,7 @@
         },
         "responses": {
           "201": {
-            "description": "Categoria criada.",
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -195,7 +258,7 @@
             }
           },
           "400": {
-            "description": "Já existe uma categoria utilizando este nome.",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -248,6 +311,18 @@
         "type": {
           "type": "string",
           "enum": ["administrator", "operator"]
+        }
+      }
+    },
+    "Session": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "token": {
+          "type": "string",
+          "format": "jwt"
         }
       }
     },
