@@ -11,6 +11,12 @@ export default class ProvidersRepository implements IProvidersRepository {
     this.repository = getRepository(Provider)
   }
 
+  public async findById(id: string): Promise<Provider | undefined> {
+    const provider = await this.repository.findOne(id)
+
+    return provider
+  }
+
   public async findByCnpj(cnpj: string): Promise<Provider | undefined> {
     const provider = await this.repository.findOne({
       where: {

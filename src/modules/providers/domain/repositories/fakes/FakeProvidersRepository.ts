@@ -7,6 +7,10 @@ import ICreateProviderDTO from '../../dtos/ICreateProviderDTO'
 export default class FakeProvidersRepository implements IProvidersRepository {
   private providers: Provider[] = []
 
+  public async findById(id: string): Promise<Provider | undefined> {
+    return this.providers.find(provider => provider.id === id)
+  }
+
   public async findByCnpj(cnpj: string): Promise<Provider | undefined> {
     return this.providers.find(provider => provider.cnpj === cnpj)
   }
