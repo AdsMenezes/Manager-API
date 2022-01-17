@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe'
 
 import AppError from '@shared/errors/AppError'
 
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider'
 import IProvidersRepository from '@modules/providers/domain/repositories/IProvidersRepository'
 import IPurchasesRepository from '@modules/purchases/domain/repositories/IPurchasesRepository'
 import IProductsRepository from '../repositories/IProductsRepository'
@@ -21,6 +22,8 @@ interface IRequest {
 @injectable()
 export default class CreateProductService {
   constructor(
+    @inject('StorageProvider')
+    private readonly storageProvider: IStorageProvider,
     @inject('ProvidersRepository')
     private readonly providersRepository: IProvidersRepository,
     @inject('PurchasesRepository')
@@ -44,6 +47,10 @@ export default class CreateProductService {
 
     if (!checkProviderExists) {
       throw new AppError('Provider not exists.')
+    }
+
+    if (image) {
+      await this.storageProvider.saveFile(image)
     }
 
     const product = await this.productsRepository.create({

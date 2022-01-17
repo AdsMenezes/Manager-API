@@ -1,4 +1,4 @@
-import Purchase from '../../infrastructure/entities/Purchase'
+import Purchase from '../../infrastructure/typeorm/entities/Purchase'
 import ICreatePurchaseDTO from '../dtos/ICreatePurchaseDTO'
 
 export default interface IPurchasesRepository {

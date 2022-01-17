@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import Purchase from '@modules/purchases/infrastructure/entities/Purchase'
+import Purchase from '@modules/purchases/infrastructure/typeorm/entities/Purchase'
 import ICreatePurchaseDTO from '../../dtos/ICreatePurchaseDTO'
 import IPurchasesRepository from '../IPurchasesRepository'
 

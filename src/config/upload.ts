@@ -21,7 +21,6 @@ export default {
     },
   }),
   limits: {
-    fieldNameSize: 5,
     fileSize: 1 * 1024 * 1024, // 1MB
   },
   fileFilter: (
