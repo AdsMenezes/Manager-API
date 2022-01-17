@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { isCelebrateError } from 'celebrate'
+import { MulterError } from 'multer'
 
 import AppError from '@shared/errors/AppError'
 
@@ -23,6 +24,13 @@ export default function exeptions(
   if (err instanceof AppError) {
     return response.status(err.statusCode).json({
       error: 'Error',
+      message: err.message,
+    })
+  }
+
+  if (err instanceof MulterError) {
+    return response.status(400).json({
+      status: 'Error',
       message: err.message,
     })
   }
