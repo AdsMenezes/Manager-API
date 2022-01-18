@@ -356,6 +356,64 @@
           }
         }
       }
+    },
+    "/purchases": {
+      "post": {
+        "tags": ["Purchases"],
+        "summary": "Registrar comprar.",
+        "description": "Método responsável por realizar o registro de comprar.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "required": true
+                  },
+                  "amount": {
+                    "type": "number",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "Product not exists."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -471,6 +529,28 @@
         "image": {
           "type": "string",
           "format": "uri"
+        }
+      }
+    },
+    "Purchase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "product_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "price_unitary": {
+          "type": "number"
+        },
+        "price_total": {
+          "type": "number"
         }
       }
     }

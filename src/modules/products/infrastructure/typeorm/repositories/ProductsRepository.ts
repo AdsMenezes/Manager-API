@@ -11,6 +11,10 @@ export default class ProductsRepository implements IProductsRepository {
     this.repository = getRepository(Product)
   }
 
+  public async findById(id: string): Promise<Product | undefined> {
+    return await this.repository.findOne(id)
+  }
+
   public async create({
     title,
     description,

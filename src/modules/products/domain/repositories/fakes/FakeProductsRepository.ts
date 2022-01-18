@@ -7,6 +7,10 @@ import ICreateProductDTO from '../../dtos/ICreateProductDTO'
 export default class FakeProductsRepository implements IProductsRepository {
   private products: Product[] = []
 
+  public async findById(id: string): Promise<Product | undefined> {
+    return this.products.find(product => product.id === id)
+  }
+
   public async create({
     title,
     description,
