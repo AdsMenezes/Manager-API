@@ -273,6 +273,89 @@
           }
         }
       }
+    },
+    "/products": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Criar produto.",
+        "description": "Método responsável por realizar a criação de um produto.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "required": true
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "required": true
+                  },
+                  "cost": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "price": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "amount": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "provider_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "required": true
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "required": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                },
+                "example": {
+                  "error": "Error",
+                  "message": "Provider not exists."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -360,6 +443,34 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "cost": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri"
         }
       }
     }
